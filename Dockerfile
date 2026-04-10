@@ -11,7 +11,14 @@ RUN yarn build
 
 FROM nginx:stable-alpine
 WORKDIR /usr/share/nginx/html
+
 RUN rm -rf ./*
+
+# 🔥 ADD THIS LINE (VERY IMPORTANT)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy build files
 COPY --from=builder /app/dist .
+
 EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
